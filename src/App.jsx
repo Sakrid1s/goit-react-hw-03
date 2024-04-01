@@ -1,18 +1,47 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SearchBox from './components/search-box/SearchBox';
 import ContactForm from './components/contact-form/ContactForm';
 import ContactList from './components/contact-list/ContactList';
-import users from './components/data/user-data.json';
+import userData from './components/data/user-data.json';
 import './App.css';
 
 function App() {
-  const [user] = useState(users);
+  const [users] = useState(() => {
+    const savedUsers = window.localStorage.getItem('users');
+    if (savedUsers !== null) {
+      return JSON.parse(savedUsers);
+    }
+    return userData;
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem('users', JSON.stringify(users));
+  }, [users]);
+
+  const [filter, setFilter] = useState('');
+  const handleSearchUser = event => {
+    setFilter(event.target.value.trim());
+    console.log(filter);
+  };
+
+  const filteredUsers = users.filter(user => {
+    const filteredByName = user.name
+      .toLowerCase()
+      .includes(filter.toLowerCase());
+    const filteredByNumber = Number(
+      user.number.toLowerCase().includes(filter.toLowerCase())
+    );
+    return filteredByName || filteredByNumber;
+  });
+
+  console.log(filteredUsers);
+
   return (
     <div>
       <h1>Phonebook</h1>
       <ContactForm />
-      <SearchBox />
-      <ContactList users={user} />
+      <SearchBox value={filter} searchUser={handleSearchUser} />
+      <ContactList filteredUsers={filteredUsers} />
     </div>
   );
 }
