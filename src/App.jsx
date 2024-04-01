@@ -21,7 +21,6 @@ function App() {
   const [filter, setFilter] = useState('');
   const handleSearchUser = event => {
     setFilter(event.target.value.trim());
-    console.log(filter);
   };
 
   const filteredUsers = users.filter(user => {
@@ -33,8 +32,6 @@ function App() {
     );
     return filteredByName || filteredByNumber;
   });
-
-  console.log(filteredUsers);
 
   return (
     <div>
