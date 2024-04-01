@@ -6,7 +6,7 @@ import userData from './components/data/user-data.json';
 import './App.css';
 
 function App() {
-  const [users] = useState(() => {
+  const [users, setUsers] = useState(() => {
     const savedUsers = window.localStorage.getItem('users');
     if (savedUsers !== null) {
       return JSON.parse(savedUsers);
@@ -33,10 +33,17 @@ function App() {
     return filteredByName || filteredByNumber;
   });
 
+  const addUser = formValues => {
+    setUsers(users => ({
+      ...users,
+      [formValues]: users[formValues],
+    }));
+  };
+
   return (
     <div>
       <h1>Phonebook</h1>
-      <ContactForm />
+      <ContactForm onAddUser={addUser} />
       <SearchBox value={filter} searchUser={handleSearchUser} />
       <ContactList filteredUsers={filteredUsers} />
     </div>
