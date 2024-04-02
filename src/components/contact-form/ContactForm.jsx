@@ -39,26 +39,43 @@ const ContactForm = ({ addUser }) => {
       validationSchema={AddUserSchema}
       onSubmit={handleSubmit}
     >
-      <Form>
-        <label htmlFor={nameFieldId}>
-          <p>Name</p>
-          <Field id={nameFieldId} name="name" />
+      <Form className={css.contactForm}>
+        <label htmlFor={nameFieldId} className={css.formLabel}>
+          <div>
+            <p>Name</p>
+            <Field
+              id={nameFieldId}
+              name="name"
+              className={css.formInput}
+              placeholder="Name..."
+            />
+          </div>
           <ErrorMessage
             className={css.errorMessage}
             name="name"
             component="span"
           />
         </label>
-        <label htmlFor={numberFieldId}>
-          <p>Number</p>
-          <Field type="text" id={numberFieldId} name="number" />
+        <label htmlFor={numberFieldId} className={css.formLabel}>
+          <div>
+            <p>Number</p>
+            <Field
+              type="text"
+              id={numberFieldId}
+              name="number"
+              className={css.formInput}
+              placeholder="Number..."
+            />
+          </div>
           <ErrorMessage
             className={css.errorMessage}
             name="number"
             component="span"
           />
         </label>
-        <button type="submit">Add contact</button>
+        <button type="submit" className={css.formBtn}>
+          Add contact
+        </button>
       </Form>
     </Formik>
   );
