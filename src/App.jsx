@@ -24,9 +24,9 @@ function App() {
     const filteredByName = user.name
       .toLowerCase()
       .includes(filter.toLowerCase());
-    const filteredByNumber = Number(
-      user.number.toLowerCase().includes(filter.toLowerCase())
-    );
+    const filteredByNumber = user.number
+      .toLowerCase()
+      .includes(filter.toLowerCase());
     return filteredByName || filteredByNumber;
   });
 
@@ -36,12 +36,18 @@ function App() {
     });
   };
 
+  const removeUser = userId => {
+    setUsers(allUsers => {
+      return allUsers.filter(user => user.id !== userId);
+    });
+  };
+
   return (
     <div>
       <h1>Phonebook</h1>
       <ContactForm addUser={addUser} />
       <SearchBox value={filter} searchUser={setFilter} />
-      <ContactList filteredUsers={filteredUsers} />
+      <ContactList filteredUsers={filteredUsers} removeUser={removeUser} />
     </div>
   );
 }
