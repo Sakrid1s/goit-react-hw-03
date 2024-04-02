@@ -10,7 +10,7 @@ const SearchBox = ({ filter, searchUser }) => {
           type="text"
           placeholder="Search..."
           value={filter}
-          onChange={searchUser}
+          onChange={event => searchUser(event.target.value)}
         />
       </label>
     </div>

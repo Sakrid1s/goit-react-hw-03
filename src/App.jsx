@@ -19,9 +19,6 @@ function App() {
   }, [users]);
 
   const [filter, setFilter] = useState('');
-  const handleSearchUser = event => {
-    setFilter(event.target.value.trim());
-  };
 
   const filteredUsers = users.filter(user => {
     const filteredByName = user.name
@@ -33,18 +30,17 @@ function App() {
     return filteredByName || filteredByNumber;
   });
 
-  const addUser = formValues => {
-    setUsers(users => ({
-      ...users,
-      [formValues]: users[formValues],
-    }));
+  const addUser = newUser => {
+    setUsers(prevUsers => {
+      return [...prevUsers, newUser];
+    });
   };
 
   return (
     <div>
       <h1>Phonebook</h1>
-      <ContactForm onAddUser={addUser} />
-      <SearchBox value={filter} searchUser={handleSearchUser} />
+      <ContactForm addUser={addUser} />
+      <SearchBox value={filter} searchUser={setFilter} />
       <ContactList filteredUsers={filteredUsers} />
     </div>
   );

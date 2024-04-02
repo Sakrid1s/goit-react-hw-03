@@ -1,10 +1,10 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { useId } from 'react';
 import * as Yup from 'yup';
 import css from './ContactForm.module.css';
+import { nanoid } from 'nanoid';
 
 const AddUserSchema = Yup.object().shape({
-  username: Yup.string()
+  name: Yup.string()
     .min(3, 'Too short!')
     .max(50, 'Too long!')
     .required('Required'),
@@ -15,32 +15,37 @@ const AddUserSchema = Yup.object().shape({
 });
 
 const initialValues = {
-  username: '',
+  name: '',
   number: '',
 };
 
-const ContactForm = ({ onAddUser }) => {
-  const nameFieldId = useId();
-  const numberFieldId = useId();
+const ContactForm = ({ addUser }) => {
+  const nameFieldId = nanoid();
+  const numberFieldId = nanoid();
 
-  const handleSubmit = (values, action) => {
-    onAddUser(values);
-    action.resetForm();
+  const handleSubmit = (values, actions) => {
+    const { name, number } = values;
+    addUser({
+      id: nanoid(),
+      name,
+      number,
+    });
+    actions.resetForm();
   };
 
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={handleSubmit}
       validationSchema={AddUserSchema}
+      onSubmit={handleSubmit}
     >
       <Form>
         <label htmlFor={nameFieldId}>
           <p>Name</p>
-          <Field type="text" id={nameFieldId} name="username" />
+          <Field id={nameFieldId} name="name" />
           <ErrorMessage
             className={css.errorMessage}
-            name="username"
+            name="name"
             component="span"
           />
         </label>
